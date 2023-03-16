@@ -206,6 +206,22 @@ app.get("/api/fetch-records", (req, res)=>{
     // console.log(response);
 });
 
+
+app.get("/api/fetch-highlights", (req, res)=>{
+    // const response = fetchAllArticles();
+    const query = Models.artModel.find().limit(3);
+
+    query.exec(function(err, docs){
+        if (!err) {
+            res.send(docs);
+        } else {
+            
+            res.send('Failed to retrieve posted articles ' + err);
+        }
+    });
+    // console.log(response);
+});
+
 app.get("/api/fetch-records-front", (req, res)=>{
     // const response = fetchAllArticles();
     Models.artModel.find((err, docs) => {
