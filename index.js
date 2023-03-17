@@ -86,6 +86,26 @@ app.post("/api/register", async(req, res)=>{
     }
 });
 
+
+app.post("/api/login-user", async(req, res)=>{
+
+    let receivedItems = JSON.parse(JSON.stringify(req.body));
+    try{
+        const user = await Models.userModel.create({
+            name : receivedItems.data.signupName,
+            email: receivedItems.data.signupEmail,
+            password : receivedItems.data.signupPassword
+        }) ;
+        res.json({status : 'ok'});
+    }catch(err){
+        console.log(err);
+        res.json({status: 'error', error: err});
+    }
+
+
+
+});
+
 app.post("/api/upload-article", async(req, res)=>{
     let receivedItems = JSON.parse(JSON.stringify(req.body));
     let articleTitle = receivedItems.otherData.articleTitle;
@@ -202,7 +222,22 @@ app.get("/api/fetch-records", (req, res)=>{
             
             res.send('Failed to retrieve posted articles ' + err);
         }
-    });
+    }).sort({_id : -1});
+    // console.log(response);
+});
+
+
+app.get("/api/fetch-records-front", (req, res)=>{
+    // const response = fetchAllArticles();
+    Models.artModel.find((err, docs) => {
+        if (!err) {
+
+            res.send(docs);
+        } else {
+            
+            res.send('Failed to retrieve posted articles ' + err);
+        }
+    }).sort({_id : -1}).limit(3);
     // console.log(response);
 });
 
@@ -222,19 +257,19 @@ app.get("/api/fetch-highlights", (req, res)=>{
     // console.log(response);
 });
 
-app.get("/api/fetch-records-front", (req, res)=>{
-    // const response = fetchAllArticles();
-    Models.artModel.find((err, docs) => {
-        if (!err) {
+// app.get("/api/fetch-records-front", (req, res)=>{
+//     // const response = fetchAllArticles();
+//     Models.artModel.find((err, docs) => {
+//         if (!err) {
 
-            res.send(docs);
-        } else {
+//             res.send(docs);
+//         } else {
             
-            res.send('Failed to retrieve posted articles ' + err);
-        }
-    }).limit(3);
-    // console.log(response);
-});
+//             res.send('Failed to retrieve posted articles ' + err);
+//         }
+//     }).limit(3);
+//     // console.log(response);
+// });
 
 
 
@@ -244,7 +279,7 @@ app.post("/api/login-user", async (req, res)=>{
     let receivedItems = JSON.parse(JSON.stringify(req.body));
     let emailVal = receivedItems.data.emailField;
     let passwordVal = receivedItems.data.passwordField;
-    
+
     await Models.userModel.findOne({
         email: emailVal,
         password: passwordVal
@@ -255,6 +290,17 @@ app.post("/api/login-user", async (req, res)=>{
             res.send("null");
         }
     });
+
+
+    // Models.userModel.countDocuments({
+    //          email: emailVal,
+    //          password: passwordVal}, function (err, count){ 
+    //     if(count>0){
+    //         res.send("found");
+    //     }else{
+    //         res.send
+    //     }
+    // }); 
 
 });
 
