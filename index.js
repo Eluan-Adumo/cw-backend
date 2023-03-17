@@ -87,24 +87,24 @@ app.post("/api/register", async(req, res)=>{
 });
 
 
-app.post("/api/login-user", async(req, res)=>{
+// app.post("/api/login-user", async(req, res)=>{
 
-    let receivedItems = JSON.parse(JSON.stringify(req.body));
-    try{
-        const user = await Models.userModel.create({
-            name : receivedItems.data.signupName,
-            email: receivedItems.data.signupEmail,
-            password : receivedItems.data.signupPassword
-        }) ;
-        res.json({status : 'ok'});
-    }catch(err){
-        console.log(err);
-        res.json({status: 'error', error: err});
-    }
+//     let receivedItems = JSON.parse(JSON.stringify(req.body));
+//     try{
+//         const user = await Models.userModel.create({
+//             name : receivedItems.data.signupName,
+//             email: receivedItems.data.signupEmail,
+//             password : receivedItems.data.signupPassword
+//         }) ;
+//         res.json({status : 'ok'});
+//     }catch(err){
+//         console.log(err);
+//         res.json({status: 'error', error: err});
+//     }
 
 
 
-});
+// });
 
 app.post("/api/upload-article", async(req, res)=>{
     let receivedItems = JSON.parse(JSON.stringify(req.body));
@@ -291,6 +291,8 @@ app.post("/api/login-user", async (req, res)=>{
         }
     });
 
+    // console.log(receivedItems);
+
 
     // Models.userModel.countDocuments({
     //          email: emailVal,
@@ -355,6 +357,23 @@ app.get("/api/fetch-single-record/:id", async(req, res)=>{
     }).then((response)=>{
         res.send(response);
         
+    });
+});
+
+
+app.get("/api/delete-record/:id", async(req, res)=>{
+    const id = req.params.id;
+    await Models.artModel.findOneAndRemove({ _id: req.params.id })
+    .then((record) => {
+      if (!record) {
+        res.status(400).send(req.params.id + ' was not found');
+      } else {
+        res.status(200).send(req.params.id + ' was deleted.');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
     });
 });
 
