@@ -10,6 +10,8 @@ const bodyParser = require("body-parser");
 const uploadPath = "../carefu_watchers/src/uploads/";
 const serverUploadLocation = "images";
 const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
+dotenv.config();
 // const cloudinary = require("./config/cloudinaryConfig.js");
 
 const storage = multer.diskStorage({
@@ -23,9 +25,9 @@ const storage = multer.diskStorage({
 });
 
 cloudinary.config({
-    cloud_name : "dalhpnank",
-    api_key: "555898314426173",
-    api_secret: "0G2L__jC5YVFfP-r8MGXzZLZ2dA"
+    cloud_name : process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 
 
@@ -62,7 +64,7 @@ app.use(cors({
 // mongoose.connect("mongodb://localhost:27017/careful-watchers-db");
 mongoose.set("strictQuery", false);
 // mongodb+srv://david_harold_005:<david_harold_005>@cluster0.fjkkauy.mongodb.net/?retryWrites=true&w=majority
-mongoose.connect("mongodb+srv://david_harold_005:david_harold_005@cluster0.fjkkauy.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGOOSE_STRING, {
     useNewUrlParser:true,
 }).then(()=>{
     console.log("succeeded");
@@ -379,7 +381,7 @@ app.get("/api/delete-record/:id", async(req, res)=>{
 
 
 // APP LISTINING AT THIS PORT
-app.listen(1337, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log("App started on port 1337");
 });
 
