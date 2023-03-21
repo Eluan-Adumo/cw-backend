@@ -11,7 +11,10 @@ const uploadPath = "../carefu_watchers/src/uploads/";
 const serverUploadLocation = "images";
 const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
+const nodemailer = require("nodemailer");
+// MIDDLE WARE
 dotenv.config();
+
 // const cloudinary = require("./config/cloudinaryConfig.js");
 
 const storage = multer.diskStorage({
@@ -380,9 +383,85 @@ app.get("/api/delete-record/:id", async(req, res)=>{
 });
 
 
+
+app.post("/api/send-company-mail", (req, res)=>{
+//     let recItems = JSON.parse(JSON.stringigy(req.body));
+//     let userName = recItems.data.userName;
+//     let userEmail = recItems.data.userEmail;
+//     let userPhone = recItems.data.userPhone;
+//     let userMessage = recItems.data.userMessage;
+
+
+
+//     let transporter = nodemailer.createTransport({
+//         host: process.env.MAIL_HOST,
+//         port: 2525,
+//         auth: {
+//             user: process.env.MAIL_USER,
+//             pass: process.env.MAIL_PASS
+//         }
+
+
+
+// });
+
+// message = {
+//     from: userEmail,
+//     to: "eluan.harold@gmail.com",
+//     subject: "New message from customer",
+//     html: "<h1>New Message From " + userName + "</h1><br /><p>"+userMessage+"</p><ul><li>User Email:" +userEmail+ "</li><li>User Phone :"+userPhone+"</li></ul>"
+// }
+// transporter.sendMail(message, function(err, info) {
+//     if (err) {
+//       console.log(err)
+//     }else{
+//       console.log(info);
+//     }
+
+// });
+console.log("API HAS BEEN HIT");
+res.send("You have reached here");
+});
+
+
+app.post("/api/just-to-test", (req, res)=>{
+
+    res.send("test is working");
+    console.log("You have hit the api");
+})
 // APP LISTINING AT THIS PORT
 app.listen(process.env.PORT, ()=>{
     console.log("App started on port 1337");
 });
 
 
+
+
+
+
+app.post("/submit-form", (req, res) => {
+  const transport = nodemailer.createTransport({
+    host: "smtp.carefulwatchers.co.uk",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "support@carefulwatchers.co.uk",
+      pass: "cowatchers2023",
+    },
+  });
+
+  const mailOptions = {
+    from: "support@carefulwatchers.co.uk",
+    to: req.body.email,
+    subject: "Quotation request from " + req.body.name,
+    text: "Welcome to our Careful Watchers !,\n\nWe are committed to providing top-notch cybersecurity solutions to protect your business from potential cyber threats. Our team of experts is dedicated to keeping your sensitive data and assets safe from unauthorized access.\n\n If you are interested in learning more about our services, we would be happy to connect with you. Depending on your preference, we can either set up a call with one of our consultants or a Zoom meeting to discuss your specific needs and how we can help you achieve your cybersecurity goals. \n\n Please feel free to reach out to us at any time to schedule a call or Zoom meeting or request for our service quotation. \n\n We look forward to hearing from you and helping you secure your business against cyber threats. \n\nSincerely,\n\nTope Daisi\nCareful Watchers",
+  };
+  transport.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+      res.send("Email sent successfully");
+    }
+  });
+});
