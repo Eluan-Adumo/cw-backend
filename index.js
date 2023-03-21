@@ -439,7 +439,7 @@ app.listen(process.env.PORT, ()=>{
 
 
 
-app.post("/submit-form", (req, res) => {
+app.post("/api/submit-form", (req, res) => {
   const transport = nodemailer.createTransport({
     host: "smtp.carefulwatchers.co.uk",
     port: 465,
