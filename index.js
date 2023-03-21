@@ -440,6 +440,7 @@ app.listen(process.env.PORT, ()=>{
 
 
 app.post("/api/submit-form", (req, res) => {
+    res.send("You are in the route of the api!!!");
   const transport = nodemailer.createTransport({
     host: "smtp.carefulwatchers.co.uk",
     port: 465,
