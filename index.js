@@ -485,7 +485,7 @@ app.post("/api/submit-form", (req, res) => {
 
 
 app.post("/api/contact-form", (req, res)=>{
-    console.log(receivedItems);
+    
     let receivedItems = JSON.parse(JSON.stringify(req.body));
     const transport = nodemailer.createTransport({
     host: "server295.web-hosting.com",
