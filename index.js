@@ -482,3 +482,54 @@ app.post("/api/submit-form", (req, res) => {
     }
   });
 });
+
+
+app.post("/api/contact-form", (req, res)=>{
+    console.log(receivedItems);
+    let receivedItems = JSON.parse(JSON.stringify(req.body));
+    const transport = nodemailer.createTransport({
+    host: "server295.web-hosting.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.CF_HOST,
+      pass: process.env.CF_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.CF_HOST,
+    to: receivedItems.Email,
+    subject: "Contact request from " + receivedItems.UserName,
+    text: "Welcome to our Careful Watchers !,\n\n Thank you for reaching out to us we will contact you shortly!",
+  };
+
+  const mailOptionsSecond = {
+    from: process.env.CF_HOST,
+    to: "support@carefulwatchers.co.uk",
+    subject: "Contact request from " + receivedItems.UserName,
+    // text: "Dear Admin you have a contact request from " + receivedItems.data.userMessage,
+    text : `Dear Admin you have a contact request from ${receivedItems.UserName}\n
+            With email address : ${receivedItems.Email}\n
+            ${receivedItems.Message}
+    `
+  };
+  transport.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+      res.send("Email sent successfully");
+    }
+  });
+
+  transport.sendMail(mailOptionsSecond, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+      res.send("Email sent successfully");
+    }
+  });
+// console.log("we are here now>>>>");
+});
