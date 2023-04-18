@@ -440,7 +440,7 @@ app.listen(process.env.PORT, ()=>{
 
 
 app.post("/api/submit-form", (req, res) => {
-    let receivedItems = JSON.parse(JSON.stringify(req.body));
+   let receivedItems = JSON.parse(JSON.stringify(req.body));
   const transport = nodemailer.createTransport({
     host: "server295.web-hosting.com",
     port: 465,
@@ -453,16 +453,16 @@ app.post("/api/submit-form", (req, res) => {
 
   const mailOptions = {
     from: process.env.CF_HOST,
-    to: receivedItems.data.userEmail,
-    subject: "Quotation request from " + receivedItems.data.userName,
+    to: receivedItems.data.email,
+    subject: "Quotation request from " + receivedItems.data.name,
     text: "Welcome to our Careful Watchers !,\n\nWe are committed to providing top-notch cybersecurity solutions to protect your business from potential cyber threats. Our team of experts is dedicated to keeping your sensitive data and assets safe from unauthorized access.\n\n If you are interested in learning more about our services, we would be happy to connect with you. Depending on your preference, we can either set up a call with one of our consultants or a Zoom meeting to discuss your specific needs and how we can help you achieve your cybersecurity goals. \n\n Please feel free to reach out to us at any time to schedule a call or Zoom meeting or request for our service quotation. \n\n We look forward to hearing from you and helping you secure your business against cyber threats. \n\nSincerely,\n\nTope Daisi\nCareful Watchers",
   };
 
   const mailOptionsSecond = {
-    from: process.env.CF_HOST,
-    to: "info@carefulwatchers.ie",
-    subject: "Quotation request from " + receivedItems.data.userName,
-    text: req.body.userMessage,
+    from: receivedItems.data.email,
+    to: process.env.CF_HOST,
+    subject: "Quotation request from " + receivedItems.data.name,
+    text: req.body.message,
   };
   transport.sendMail(mailOptions, (error, info) => {
     if (error) {
