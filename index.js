@@ -35,6 +35,7 @@ cloudinary.config({
 
 
 
+
 const uploads = (file, folder)=>{
     return new Promise(resolve =>{
         cloudinary.UploadStream.upload(file, (result)=>{
