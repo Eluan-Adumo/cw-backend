@@ -441,6 +441,7 @@ app.listen(process.env.PORT, ()=>{
 
 app.post("/api/submit-form", (req, res) => {
    let receivedItems = JSON.parse(JSON.stringify(req.body));
+    console.log(receivedItems)
   const transport = nodemailer.createTransport({
     host: "server295.web-hosting.com",
     port: 465,
